@@ -2,8 +2,7 @@ import cv2
 import time
 
 def start():
-    # cap = cv2.VideoCapture('colors.png')
-    cap = cv2.VideoCapture('hd.mp4')
+    cap = cv2.VideoCapture('full2.mp4')
     # cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
@@ -22,18 +21,47 @@ def start():
 
                 # time.sleep(.07)
 
-                altura_inicial = 30
-                larg_pos_inicio = 10
-                for i in range(altura_inicial, 700, 30):
-                    # altura x largura
-                    (b, g, r) = (frame[i, larg_pos_inicio])
-                    # largura x altura
-                    frame = cv2.circle(frame, (larg_pos_inicio, i), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
-                    frame = cv2.circle(frame, (larg_pos_inicio, i), 10, (int(b), int(g), int(r)), thickness=-1,lineType=cv2.LINE_AA)
+                left = 40
+                top = 30
 
-                    frame = cv2.line(frame, (larg_pos_inicio + 25, i), (280, i), (0, 0, 0), thickness=25)
-                    frame = cv2.putText(frame, f'{b}, {g}, {r}', (larg_pos_inicio + 20, i + 10), fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=1, color=(int(b), int(g), int(r)))
-                    cv2.imshow('Frame', frame)
+                # circles left
+                margin_top = top
+                margin_left = left
+                for i in range(margin_top, 700, 30):
+                    # altura x largura
+                    (b, g, r) = (frame[i, margin_left])
+                    # largura x altura
+                    frame = cv2.circle(frame, (margin_left, i), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                    frame = cv2.circle(frame, (margin_left, i), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+                    # frame = cv2.line(frame, (margin_left + 25, itens_left), (280, itens_left), (0, 0, 0), thickness=25)
+                    # frame = cv2.putText(frame, f'{b}, {g}, {r}', (margin_left + 20, itens_left + 10), fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=1, color=(int(b), int(g), int(r)))
+
+                # circles top
+                margin_top = top
+                margin_left = left
+                for i in range(margin_left, 1250, 30):
+                    (b, g, r) = (frame[margin_left, i])
+                    frame = cv2.circle(frame, (i, margin_top), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                    frame = cv2.circle(frame, (i, margin_top), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+
+                # circles rigth
+                margin_top = top
+                margin_right = w - left
+                for i in range(margin_top, 700, 30):
+                    (b, g, r) = (frame[i, margin_right])
+                    frame = cv2.circle(frame, (margin_right, i), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                    frame = cv2.circle(frame, (margin_right, i), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+
+                # circles botton
+                margin_top = h - top
+                margin_left = left
+                for i in range(margin_left, 1250, 30):
+                    (b, g, r) = (frame[margin_top, i])
+                    frame = cv2.circle(frame, (i, margin_top), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                    frame = cv2.circle(frame, (i, margin_top), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+
+
+                cv2.imshow('Frame', frame)
 
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     break
