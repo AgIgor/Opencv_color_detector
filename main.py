@@ -2,7 +2,7 @@ import cv2
 import time
 
 def start():
-    cap = cv2.VideoCapture('full2.mp4')
+    cap = cv2.VideoCapture('full.mp4')
     # cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
