@@ -1,5 +1,22 @@
 import cv2
-import time
+# import time
+# from json_generate import send_data
+from structure import *
+import requests
+
+# led_left["seg"][0]["col"] = [[12, 34, 56]]
+# print(led_left)
+
+# for x in led_left["seg"]:
+#     for y in x:
+#         print(y, x[y])
+
+
+DEBUG = True
+LEFT = True
+TOP = False
+RIGHT = False
+BOTTON = False
 
 def start():
     cap = cv2.VideoCapture('full.mp4')
@@ -22,43 +39,62 @@ def start():
                 # time.sleep(.07)
 
                 left = 40
-                top = 30
-
+                top = 55
+                step = 120
                 # circles left
-                margin_top = top
-                margin_left = left
-                for i in range(margin_top, 700, 30):
-                    # altura x largura
-                    (b, g, r) = (frame[i, margin_left])
-                    # largura x altura
-                    frame = cv2.circle(frame, (margin_left, i), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
-                    frame = cv2.circle(frame, (margin_left, i), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
-                    # frame = cv2.line(frame, (margin_left + 25, itens_left), (280, itens_left), (0, 0, 0), thickness=25)
-                    # frame = cv2.putText(frame, f'{b}, {g}, {r}', (margin_left + 20, itens_left + 10), fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=1, color=(int(b), int(g), int(r)))
+                if LEFT:
+                    margin_top = top
+                    margin_left = left
+                    val = 0
+                    for i in range(margin_top, 700, step):
+                        val += 1
+                        # altura x largura
+                        (b, g, r) = (frame[i, margin_left])
 
-                # circles top
-                margin_top = top
-                margin_left = left
-                for i in range(margin_left, 1250, 30):
-                    (b, g, r) = (frame[margin_left, i])
-                    frame = cv2.circle(frame, (i, margin_top), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
-                    frame = cv2.circle(frame, (i, margin_top), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
 
-                # circles rigth
-                margin_top = top
-                margin_right = w - left
-                for i in range(margin_top, 700, 30):
-                    (b, g, r) = (frame[i, margin_right])
-                    frame = cv2.circle(frame, (margin_right, i), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
-                    frame = cv2.circle(frame, (margin_right, i), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+                        led_left["seg"][0]["col"] = [[r, g, b]]
+                        print(led_left)
+                        # requests.post(url="http://192.168.15.7/json/state", data=led_left)
+                        # json_leds = send_data(5, 11, (b, g, r))
 
-                # circles botton
-                margin_top = h - top
-                margin_left = left
-                for i in range(margin_left, 1250, 30):
-                    (b, g, r) = (frame[margin_top, i])
-                    frame = cv2.circle(frame, (i, margin_top), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
-                    frame = cv2.circle(frame, (i, margin_top), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+
+                        # largura x altura
+                        if DEBUG:
+                            frame = cv2.circle(frame, (margin_left, i), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                            frame = cv2.circle(frame, (margin_left, i), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+                            # frame = cv2.line(frame, (margin_left + 25, itens_left), (280, itens_left), (0, 0, 0), thickness=25)
+                            # frame = cv2.putText(frame, f'{b}, {g}, {r}', (margin_left + 20, itens_left + 10), fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=1, color=(int(b), int(g), int(r)))
+                # print(val)
+
+                if TOP:
+                    # circles top
+                    margin_top = top
+                    margin_left = left
+                    for i in range(margin_left, 1250, step):
+                        (b, g, r) = (frame[margin_left, i])
+                        if DEBUG:
+                            frame = cv2.circle(frame, (i, margin_top), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                            frame = cv2.circle(frame, (i, margin_top), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+
+                if RIGHT:
+                    # circles rigth
+                    margin_top = top
+                    margin_right = w - left
+                    for i in range(margin_top, 700, step):
+                        (b, g, r) = (frame[i, margin_right])
+                        if DEBUG:
+                            frame = cv2.circle(frame, (margin_right, i), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                            frame = cv2.circle(frame, (margin_right, i), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
+
+                if BOTTON:
+                    # circles botton
+                    margin_top = h - top
+                    margin_left = left
+                    for i in range(margin_left, 1250, step):
+                        (b, g, r) = (frame[margin_top, i])
+                        if DEBUG:
+                            frame = cv2.circle(frame, (i, margin_top), 12, (0, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+                            frame = cv2.circle(frame, (i, margin_top), 10, (int(b), int(g), int(r)), thickness=-1, lineType=cv2.LINE_AA)
 
 
                 cv2.imshow('Frame', frame)
@@ -70,6 +106,7 @@ def start():
                 start()
 
 cv2.destroyAllWindows()
+
 
 
 if __name__ == "__main__":
